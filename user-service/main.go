@@ -22,7 +22,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	port := utils.GetEnv("PORT", "8082")
+	port := utils.GetEnv("PORT", "3001")
 
 	router := gin.Default()
 	routes.SetupRoutes(router)
