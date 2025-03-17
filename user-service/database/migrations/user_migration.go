@@ -10,7 +10,7 @@ import (
 // CreateUserTableMigration defines the migration for creating the 'users' table
 func CreateUserTableMigration() *gormigrate.Migration {
 	return &gormigrate.Migration{
-		ID: "2025_03_15_001", // Migration ID (must be unique)
+		ID: "service_user_2025_03_17_001", // Migration ID (must be unique)
 		Migrate: func(tx *gorm.DB) error {
 			// Apply the migration (create users table)
 			return tx.AutoMigrate(&models.User{})
