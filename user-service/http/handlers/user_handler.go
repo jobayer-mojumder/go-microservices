@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"user-service/http/requests"
 	"user-service/models"
+	"user-service/rabbitmq"
 	"user-service/repositories"
 	"user-service/utils"
 
@@ -30,7 +31,15 @@ func CreateUser(c *gin.Context) {
 		Name:  name,
 		Email: email,
 	}
-	repositories.CreateUser(&user)
+	// call rabbitmq publisher after creating user successfully
+
+	if err := repositories.CreateUser(&user); err != nil {
+		utils.SendErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// publish user created event
+	rabbitmq.PublishUserCreated(user)
 
 	utils.SendSuccessResponse(c, http.StatusCreated, gin.H{"message": "User created", "user": user})
 }
